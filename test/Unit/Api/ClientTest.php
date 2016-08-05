@@ -422,6 +422,18 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         Client::updateSku(1, array());
     }
 
+    public function testGettingSkuForProduct()
+    {
+      $this->connection->expects($this->once())
+          ->method('get')
+          ->with($this->basePath . '/products/1/skus')
+          ->will($this->returnValue(array(array())));
+
+      $collection = Client::getProductSkus(1);
+      $this->assertInternalType('array', $collection);
+      $this->assertContainsOnlyInstancesOf('Bigcommerce\\Api\\Resources\\Sku', $collection);
+    }
+
     public function testGettingProductGoogleProductSearch()
     {
       $this->connection->expects($this->once())
